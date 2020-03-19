@@ -13,7 +13,6 @@ class Task {
     if (id != null) {
       map['id'] = id;
     }
-    ;
 
     map['title'] = title;
     map['date'] = date.toIso8601String();

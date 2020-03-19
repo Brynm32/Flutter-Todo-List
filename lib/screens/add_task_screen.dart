@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_list/helpers/database_helpers.dart';
+import 'package:todo_list/models/task_models.dart';
 
 class AddTaskScreen extends StatefulWidget {
+  final Function updateTaskList;
+  final Task task;
+
+  AddTaskScreen({this.updateTaskList, this.task});
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }
@@ -20,6 +26,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.task != null) {
+      _title = widget.task.title;
+      _date = widget.task.date;
+      _priority = widget.task.priority;
+    }
+
     _dateController.text = _dateFormatter.format(_date);
   }
 
@@ -50,8 +62,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
       print('$_title, $_date, $_priority');
       // Insert the task to our user's database
+      Task task = Task(title: _title, date: _date, priority: _priority);
+      if (widget.task == null) {
+        task.status = 0;
+        DatabaseHelper.instance.insertTask(task);
+      } else {
+        task.status = widget.task.status;
+        DatabaseHelper.instance.updateTask(task);
+      }
 
       // Update the task
+      widget.updateTaskList();
 
       Navigator.pop(context);
     }
