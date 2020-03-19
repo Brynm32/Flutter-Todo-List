@@ -55,13 +55,13 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                 _updateTaskList();
               },
               activeColor: Theme.of(context).primaryColor,
-              value: true,
+              value: task.status == 1 ? true : false,
             ),
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => AddTaskScreen(
-                    updateTaskList: _updateTaskList(), task: task),
+                builder: (_) =>
+                    AddTaskScreen(updateTaskList: _updateTaskList, task: task),
               ),
             ),
           ),
